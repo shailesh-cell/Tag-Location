@@ -6,4 +6,5 @@ terraform {
     storage_account_name  = "terraformconfigsa"
     container_name        = "tfstate"
     key                   = "terraform.tfstate"
+  }
 }
