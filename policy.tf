@@ -1,5 +1,3 @@
-# Policy.tf
-
 data "azurerm_subscription" "current" {}
 
 resource "azurerm_policy_definition" "tagging_and_location" {
@@ -78,5 +76,4 @@ POLICY_RULE
   }
 }
 PARAMETERS
-}
 }
