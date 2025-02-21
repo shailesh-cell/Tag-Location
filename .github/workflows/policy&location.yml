@@ -58,9 +58,9 @@ jobs:
       id: plan-check
       run: |
         if [ -f plan.tfplan ]; then
-          echo "plan_exists=true" >> $GITHUB_ENV
+          echo "::set-output name=plan_exists::true" >> $GITHUB_ENV
         else
-          echo "plan_exists=false" >> $GITHUB_ENV
+          echo "::set-output name=plan_exists::false" >> $GITHUB_ENV
         fi
 
   deploy:
