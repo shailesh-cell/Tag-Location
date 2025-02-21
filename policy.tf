@@ -68,8 +68,15 @@ resource "azurerm_policy_definition" "tagging_and_location" {
 }
 POLICY_RULE
 
-  parameters = {
-    allowedLocations = var.allowed_locations
-    requiredTags = var.required_tags
+  parameters = <<PARAMETERS
+{
+  "allowedLocations": {
+    "value": ${jsonencode(var.allowed_locations)}
+  },
+  "requiredTags": {
+    "value": ${jsonencode(var.required_tags)}
   }
+}
+PARAMETERS
+}
 }
