@@ -67,7 +67,7 @@ jobs:
     name: Terraform Apply
     needs: init-and-plan
     runs-on: ubuntu-latest
-    if: needs.init-and-plan.outputs.plan-exists == 'true'
+    if: ${{ github.event_name == 'workflow_dispatch' }}  # Manual trigger
     
     steps:
     - name: Checkout code
