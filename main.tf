@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "rg" {
   tags     = var.tags
 }
 
-resource "azurerm_policy_definition" "tag_policy" {
+resource "azurerm_resource_policy_definition" "tag_policy" {
   name         = "require-tags"
   policy_type  = "Custom"
   mode         = "All"
@@ -26,7 +26,7 @@ resource "azurerm_policy_definition" "tag_policy" {
   })
 }
 
-resource "azurerm_policy_assignment" "tag_policy_assignment" {
+resource "azurerm_resource_policy_assignment" "tag_policy_assignment" {
   name                 = "tag_policy_assignment"
   policy_definition_id = azurerm_policy_definition.tag_policy.id
   scope                = azurerm_resource_group.rg.id
