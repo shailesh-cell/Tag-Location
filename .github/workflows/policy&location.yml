@@ -53,13 +53,13 @@ jobs:
       run: |
         terraform plan -out=plan.tfplan
         
-      # Step 6: Upload Terraform Plan Artifact
-      - name: Upload Terraform Plan Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: terraform-plan
-          path: plan.tfplan
-          retention-days: 5  # Keep the artifact for 5 days
+    # Step 6: Upload Terraform Plan Artifact
+    - name: Upload Terraform Plan Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: terraform-plan
+        path: plan.tfplan
+        retention-days: 5  # Keep the artifact for 5 days
 
     # ✅ Step 7: Check if Plan Exists
     - name: Check Terraform Plan Exists
