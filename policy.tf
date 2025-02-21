@@ -23,7 +23,8 @@ resource "azurerm_policy_definition" "tagging_and_location" {
         "metadata": {
           "displayName": "Allowed Locations",
           "description": "The list of locations where resources can be created."
-        }
+        },
+        "allowedValues": [${join(",", var.allowed_locations)}]
       },
       "requiredTags": {
         "type": "Object",
@@ -67,14 +68,8 @@ resource "azurerm_policy_definition" "tagging_and_location" {
 }
 POLICY_RULE
 
-  parameters = <<PARAMETERS
-{
-  "allowedLocations": {
-    "value": ${jsonencode(var.allowed_locations)}
-  },
-  "requiredTags": {
-    "value": ${jsonencode(var.required_tags)}
+  parameters = {
+    allowedLocations = var.allowed_locations
+    requiredTags = var.required_tags
   }
-}
-PARAMETERS
 }
