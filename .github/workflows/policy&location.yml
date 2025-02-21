@@ -102,8 +102,14 @@ jobs:
           -backend-config="storage_account_name=terraformconfigsa" \
           -backend-config="container_name=tfstate" \
           -backend-config="key=terraform.tfstate"
+          
+    # ✅ Step 5: Download Terraform Plan Artifact
+    - name: Download Terraform Plan Artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: terraform-plan
 
-    # ✅ Step 5: Apply Terraform Plan
+    # ✅ Step 6: Apply Terraform Plan
     - name: Apply Terraform
       run: |
         terraform apply -auto-approve plan.tfplan
@@ -147,8 +153,14 @@ jobs:
           -backend-config="storage_account_name=terraformconfigsa" \
           -backend-config="container_name=tfstate" \
           -backend-config="key=terraform.tfstate"
+          
+    # ✅ Step 5: Download Terraform Plan Artifact
+    - name: Download Terraform Plan Artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: terraform-plan
 
-    # ✅ Step 5: Terraform Destroy
+    # ✅ Step 6: Terraform Destroy
     - name: Destroy Terraform Resources
       run: |
         terraform destroy -auto-approve
