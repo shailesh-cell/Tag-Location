@@ -17,6 +17,22 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    # ✅ Step 1: Login to Azure using OIDC (NO Client Secret Required)
+    - name: Login to Azure using OIDC
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        allow-no-subscriptions: true
+
+    # ✅ Step 2: Debug Azure Authentication (REMOVE az account show)
+    - name: Debug Azure Login
+      run: |
+        echo "Azure OIDC Login Successful!"
+        echo "Checking Environment Variables..."
+        env | grep AZURE_
+
     # ✅ Step 3: Set up Terraform
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v1
@@ -41,7 +57,7 @@ jobs:
     # ✅ Step 6: Plan Terraform Deployment
     - name: Plan Terraform
       run: |
-	echo "ARM_USE_OIDC=true" >> $GITHUB_ENV
+        echo "ARM_USE_OIDC=true" >> $GITHUB_ENV
         echo "ARM_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}" >> $GITHUB_ENV
         echo "ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}" >> $GITHUB_ENV
         echo "ARM_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
@@ -53,5 +69,5 @@ jobs:
         echo "ARM_USE_OIDC=true" >> $GITHUB_ENV
         echo "ARM_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}" >> $GITHUB_ENV
         echo "ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}" >> $GITHUB_ENV
-        echo "ARM_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }}" >> $GITHUB_ENV	
+        echo "ARM_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
 	terraform apply -auto-approve plan.tfplan
