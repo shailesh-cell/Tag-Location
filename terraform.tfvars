@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # terraform.tfvars
 
 resource_group_name = "example-resource-group"

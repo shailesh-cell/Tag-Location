@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # output.tf
 
 output "resource_group_name" {

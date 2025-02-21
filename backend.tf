@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # backend.tf
 
 terraform {

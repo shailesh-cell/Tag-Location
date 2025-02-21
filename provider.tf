@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # provider.tf
 
 provider "azurerm" {

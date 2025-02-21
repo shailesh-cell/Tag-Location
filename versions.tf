@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # versions.tf
 
 terraform {

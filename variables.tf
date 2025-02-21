@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # variables.tf
 
 variable "subscription_id" {
