@@ -1,6 +1,6 @@
 # terraform.tfvars
 
-resource_group_name = "example-resource-group"
+resource_group_name = "Policy-RG"
 location            = "Central India"
 tags = {
   Environment = "Dev"

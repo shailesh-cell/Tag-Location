@@ -1,14 +1,4 @@
-# variables.tf
-
-variable "subscription_id" {
-  description = "The subscription ID for Azure"
-  type        = string
-}
-
-variable "tenant_id" {
-  description = "The tenant ID for Azure"
-  type        = string
-}
+#variable.tf
 
 variable "resource_group_name" {
   description = "The name of the resource group"
