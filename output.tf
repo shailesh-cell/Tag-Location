@@ -1,16 +1,11 @@
 # output.tf
 
-output "resource_group_name" {
-  description = "The name of the resource group"
-  value       = azurerm_resource_group.rg.name
+output "policy_name" {
+  value       = azurerm_policy_definition.tagging_and_location.name
+  description = "The name of the created Azure Policy definition."
 }
 
-output "resource_group_location" {
-  description = "The location of the resource group"
-  value       = azurerm_resource_group.rg.location
-}
-
-output "resource_group_id" {
-  description = "The ID of the resource group"
-  value       = azurerm_resource_group.rg.id
+output "policy_assignment_id" {
+  value       = azurerm_subscription_policy_assignment.tagging_and_location.id
+  description = "The ID of the assigned Azure Policy to enforce tagging and location restrictions."
 }

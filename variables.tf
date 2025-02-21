@@ -1,16 +1,11 @@
 #variable.tf
 
-variable "resource_group_name" {
-  description = "The name of the resource group"
-  type        = string
+variable "allowed_locations" {
+  description = "List of allowed Azure regions for deployment"
+  type        = list(string)
 }
 
-variable "location" {
-  description = "The location for the resources"
-  type        = string
-}
-
-variable "tags" {
-  description = "A map of tags to assign to the resources"
+variable "required_tags" {
   type        = map(string)
+  description = "Tags that must be applied to all resources"
 }
