@@ -22,7 +22,7 @@ resource "azurerm_policy_definition" "tagging_and_location" {
           "displayName": "Allowed Locations",
           "description": "The list of locations where resources can be created."
         },
-        "allowedValues": [${join(",", var.allowed_locations)}]
+        "allowedValues": ${jsonencode(var.allowed_locations)}
       },
       "requiredTags": {
         "type": "Object",
