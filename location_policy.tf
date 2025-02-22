@@ -1,6 +1,4 @@
-#location_Policy.tf
-
-data "azurerm_subscription" "current_location_policy" {}
+# location_policy.tf
 
 resource "azurerm_policy_definition" "location_policy" {
   name         = "location-policy"
@@ -8,27 +6,21 @@ resource "azurerm_policy_definition" "location_policy" {
   mode         = "All"
   display_name = "Enforce Allowed Locations"
 
-  policy_rule = <<POLICY_RULE
-{
-  "if": {
-    "field": "location",
-    "notIn": "[parameters('allowedLocations')]"
-  },
-  "then": {
-    "effect": "Deny"
+  metadata = <<EOT
+  {
+    "category": "General"
   }
-}
-POLICY_RULE
+  EOT
 
-  parameters = <<PARAMETERS
-{
-  "allowedLocations": {
-    "type": "Array",
-    "metadata": {
-      "displayName": "Allowed Locations",
-      "description": "The list of locations where resources can be created."
+  policy_rule = <<POLICY
+  {
+    "if": {
+      "field": "location",
+      "notIn": var.allowed_locations
+    },
+    "then": {
+      "effect": "deny"
     }
   }
-}
-PARAMETERS
+  POLICY
 }

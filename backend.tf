@@ -1,5 +1,3 @@
-# backend.tf
-
 terraform {
   backend "azurerm" {
     resource_group_name   = "terraform_tfstate_rg"
