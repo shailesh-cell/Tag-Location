@@ -17,16 +17,20 @@ resource "azurerm_policy_definition" "tagging_and_location" {
         "notIn": "[parameters('allowedLocations')]"
       },
       {
-        "not": {
-          "field": "[concat('tags[', keys(parameters('requiredTags'))[0], ']')]",
-          "exists": "true"
-        }
-      },
-      {
-        "not": {
-          "field": "[concat('tags[', keys(parameters('requiredTags'))[1], ']')]",
-          "exists": "true"
-        }
+        "anyOf": [
+          {
+            "not": {
+              "field": "tags.Environment",
+              "exists": "true"
+            }
+          },
+          {
+            "not": {
+              "field": "tags.Owner",
+              "exists": "true"
+            }
+          }
+        ]
       }
     ]
   },
