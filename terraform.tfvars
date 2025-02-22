@@ -2,4 +2,4 @@
 
 allowed_locations = ["centralindia", "southindia", "westindia"]
 
-required_tags = ["CostCenter", "Environment", "Owner"]
+required_tags = ["CostCenter"]

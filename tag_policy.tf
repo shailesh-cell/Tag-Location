@@ -14,7 +14,7 @@ resource "azurerm_policy_definition" "tagging_policy" {
 
   parameters = jsonencode({
     "required_tags" = {
-      "type" = "string"
+      "type" = "Array"
       "metadata" = {
         "description" = "List of required tags."
         "displayName" = "Required Tags"
