@@ -120,7 +120,8 @@ jobs:
     # ✅ Step 6: Apply Terraform Plan
     - name: Apply Terraform
       run: |
-        terraform apply -auto-approve plan.tfplan
+        terraform apply -auto-approve plan.tfplan -var-file="variables.tfvars"
+
 
   destroy:
     name: Terraform Destroy
@@ -171,4 +172,4 @@ jobs:
     # ✅ Step 6: Terraform Destroy
     - name: Destroy Terraform Resources
       run: |
-        terraform destroy -auto-approve
+        terraform destroy -auto-approve -var-file="variables.tfvars"
