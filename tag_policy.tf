@@ -14,7 +14,7 @@ resource "azurerm_policy_definition" "tagging_policy" {
 
   parameters = jsonencode({
     "required_tags" = {
-      "type" = "Array"
+      "type" = "Object"
       "metadata" = {
         "description" = "List of required tags."
         "displayName" = "Required Tags"
@@ -27,9 +27,14 @@ resource "azurerm_policy_definition" "tagging_policy" {
     "if": {
       "allOf": [
         {
-          "field": "[format('tags[{0}]', parameters('required_tags'))]",
-          "exists": "false"
-        }
+          "field": "tags['CostCenter']",
+          "notEquals": "[parameters('required_tags')['CostCenter']]"
+        },
+	
+	{
+	  "field": "tags['Env']",
+          "notEquals": "[parameters('required_tags')['Env']]"   
+	}
       ]
     },
     "then": {
