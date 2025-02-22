@@ -16,7 +16,7 @@ resource "azurerm_policy_definition" "location_policy" {
   {
     "if": {
       "field": "location",
-      "notIn": var.allowed_locations
+      "notIn": [${join(",", var.allowed_locations)}]
     },
     "then": {
       "effect": "deny"
