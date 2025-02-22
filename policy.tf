@@ -47,7 +47,6 @@ policy_rule = <<POLICY_RULE
 }
 POLICY_RULE
 
-
 parameters = <<PARAMETERS
 {
   "allowedLocations": {
