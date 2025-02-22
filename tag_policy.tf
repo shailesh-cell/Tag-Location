@@ -6,11 +6,11 @@ resource "azurerm_policy_definition" "tagging_policy" {
   mode         = "All"
   display_name = "Enforce Required Tags"
 
-  metadata = <<EOT
+  metadata = <<METADATA
   {
     "category": "General"
   }
-  EOT
+  METADATA
 
   policy_rule = <<POLICY
   {
@@ -27,4 +27,11 @@ resource "azurerm_policy_definition" "tagging_policy" {
     }
   }
   POLICY
+}
+
+  parameters = jsonencode({
+    "allowedLocations" = {
+      "value" = var.required_tags  # Now using a variable instead of hardcoded values
+    }
+  })
 }

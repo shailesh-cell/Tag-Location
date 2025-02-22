@@ -6,11 +6,11 @@ resource "azurerm_policy_definition" "location_policy" {
   mode         = "All"
   display_name = "Enforce Allowed Locations"
 
-  metadata = <<EOT
+  metadata = <<METADATA
   {
     "category": "General"
   }
-  EOT
+  METADATA
 
   policy_rule = <<POLICY
   {
@@ -23,4 +23,11 @@ resource "azurerm_policy_definition" "location_policy" {
     }
   }
   POLICY
+}
+
+  parameters = jsonencode({
+    "allowedLocations" = {
+      "value" = var.allowed_locations  # Now using a variable instead of hardcoded values
+    }
+  })
 }

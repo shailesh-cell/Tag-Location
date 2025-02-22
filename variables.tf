@@ -15,3 +15,8 @@ variable "required_tags" {
     Owner       = "DevOps Team"
   }
 }
+
+variable "subscription_id" {
+  type        = string
+  description = "Azure Subscription ID"
+}
