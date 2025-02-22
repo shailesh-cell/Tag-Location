@@ -20,13 +20,19 @@ resource "azurerm_policy_definition" "tagging_and_location" {
         "anyOf": [
           {
             "not": {
-              "field": "tags.Environment",
+              "field": "[concat('tags[', parameters('requiredTags').tag1, ']')]",
               "exists": "true"
             }
           },
           {
             "not": {
-              "field": "tags.Owner",
+              "field": "[concat('tags[', parameters('requiredTags').tag2, ']')]",
+              "exists": "true"
+            }
+          },
+          {
+            "not": {
+              "field": "[concat('tags[', parameters('requiredTags').tag3, ']')]",
               "exists": "true"
             }
           }
@@ -54,6 +60,26 @@ POLICY_RULE
     "metadata": {
       "displayName": "Required Tags",
       "description": "Tags that must be applied to resources."
+    },
+    "properties": {
+      "tag1": {
+        "type": "String",
+        "metadata": {
+          "description": "First required tag"
+        }
+      },
+      "tag2": {
+        "type": "String",
+        "metadata": {
+          "description": "Second required tag"
+        }
+      },
+      "tag3": {
+        "type": "String",
+        "metadata": {
+          "description": "Third required tag"
+        }
+      }
     }
   }
 }
