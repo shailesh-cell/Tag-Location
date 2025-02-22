@@ -3,20 +3,14 @@
 variable "allowed_locations" {
   description = "List of allowed Azure regions for deployment"
   type        = list(string)
-  default     = ["centralindia", "southindia", "westindia"]
 }
 
 variable "required_tags" {
-  type        = map(string)
   description = "Tags that must be applied to all resources"
-  default     = {
-    CostCenter  = "FreeTier"
-    Environment = "Production"
-    Owner       = "DevOps Team"
-  }
+  type        = list(string)  # Changed from map(string) to list(string) for consistency
 }
 
 variable "subscription_id" {
-  type        = string
   description = "Azure Subscription ID"
+  type        = string
 }

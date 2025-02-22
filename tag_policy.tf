@@ -6,32 +6,31 @@ resource "azurerm_policy_definition" "tagging_policy" {
   mode         = "All"
   display_name = "Enforce Required Tags"
 
-  metadata = <<METADATA
-  {
+  metadata = jsonencode({
     "category": "General"
-  }
-  METADATA
+  })
 
-  policy_rule = <<POLICY
-  {
-    "if": {
-      "allOf": [
-        {
-          "field": "[concat('tags[', parameters('tagName'), ']')]",
-          "exists": "false"
+  policy_rule = jsonencode({
+    "if" = {
+      "allOf" = [
+        for tag in var.required_tags : {
+          "field"  = "tags['${tag}']"
+          "exists" = "false"
         }
       ]
     },
-    "then": {
-      "effect": "deny"
+    "then" = {
+      "effect" = "deny"
     }
-  }
-  POLICY
-}
+  })
 
   parameters = jsonencode({
-    "allowedLocations" = {
-      "value" = var.required_tags  # Now using a variable instead of hardcoded values
+    "required_tags" = {
+      "type" = "Array",
+      "metadata" = {
+        "description" = "The list of required tags for resources.",
+        "displayName" = "Required Tags"
+      }
     }
   })
 }
