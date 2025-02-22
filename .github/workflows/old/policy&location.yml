@@ -1,10 +1,10 @@
-name: Azure Terraform Deployment
+name: Azure Terraform Deployment  # 🔹 Updated name
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # 🔹 Manual trigger for all jobs
 
 permissions:
-  id-token: write
+  id-token: write  # Required for OIDC authentication
   contents: read
 
 jobs:
@@ -12,12 +12,13 @@ jobs:
     name: Terraform Init & Plan
     runs-on: ubuntu-latest
     outputs:
-      plan-exists: ${{ env.plan_exists }}
+      plan-exists: ${{ steps.plan-check.outputs.plan_exists }}
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    # ✅ Step 1: Login to Azure using OIDC
     - name: Login to Azure using OIDC
       uses: azure/login@v1
       with:
@@ -26,9 +27,11 @@ jobs:
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         allow-no-subscriptions: true
 
+    # ✅ Step 2: Set up Terraform
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v1
       
+    # ✅ Step 3: Configure Terraform for OIDC
     - name: Set Terraform Environment Variables
       run: |
         echo "ARM_USE_OIDC=true" >> $GITHUB_ENV
@@ -36,6 +39,7 @@ jobs:
         echo "ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}" >> $GITHUB_ENV
         echo "ARM_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
 
+    # ✅ Step 4: Terraform Init
     - name: Initialize Terraform
       run: |
         terraform init \
@@ -44,36 +48,41 @@ jobs:
           -backend-config="container_name=tfstate" \
           -backend-config="key=terraform.tfstate"
 
+    # ✅ Step 5: Terraform Plan
     - name: Terraform Plan
       run: |
         terraform plan -out=plan.tfplan -var-file="terraform.tfvars"
 
+        
+    # Step 6: Upload Terraform Plan Artifact
     - name: Upload Terraform Plan Artifact
       uses: actions/upload-artifact@v4
       with:
         name: terraform-plan
         path: plan.tfplan
-        retention-days: 7  
+        retention-days: 5  # Keep the artifact for 5 days
 
+    # ✅ Step 7: Check if Plan Exists
     - name: Check Terraform Plan Exists
       id: plan-check
       run: |
         if [ -f plan.tfplan ]; then
-          echo "plan_exists=true" >> $GITHUB_ENV
+          echo "::set-output name=plan_exists::true" >> $GITHUB_ENV
         else
-          echo "plan_exists=false" >> $GITHUB_ENV
+          echo "::set-output name=plan_exists::false" >> $GITHUB_ENV
         fi
 
   deploy:
     name: Terraform Apply
     needs: init-and-plan
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' }}
-
+    if: ${{ github.event_name == 'workflow_dispatch' }}  # Manual trigger
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    # ✅ Step 1: Login to Azure
     - name: Login to Azure using OIDC
       uses: azure/login@v1
       with:
@@ -82,9 +91,19 @@ jobs:
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         allow-no-subscriptions: true
 
+    # ✅ Step 2: Set up Terraform
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v1
+      
+    # ✅ Step 3: Configure Terraform for OIDC
+    - name: Set Terraform Environment Variables
+      run: |
+        echo "ARM_USE_OIDC=true" >> $GITHUB_ENV
+        echo "ARM_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}" >> $GITHUB_ENV
+        echo "ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}" >> $GITHUB_ENV
+        echo "ARM_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
 
+    # ✅ Step 4: Terraform Init (Again)
     - name: Initialize Terraform
       run: |
         terraform init \
@@ -92,26 +111,30 @@ jobs:
           -backend-config="storage_account_name=terraformconfigsa" \
           -backend-config="container_name=tfstate" \
           -backend-config="key=terraform.tfstate"
-
+          
+    # ✅ Step 5: Download Terraform Plan Artifact
     - name: Download Terraform Plan Artifact
       uses: actions/download-artifact@v4
       with:
         name: terraform-plan
 
+    # ✅ Step 6: Apply Terraform Plan
     - name: Apply Terraform
       run: |
         terraform apply -auto-approve plan.tfplan
+
 
   destroy:
     name: Terraform Destroy
     needs: init-and-plan
     runs-on: ubuntu-latest
-    if: ${{ env.plan_exists == 'true' }}
+    if: needs.init-and-plan.outputs.plan-exists == 'true'
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    # ✅ Step 1: Login to Azure
     - name: Login to Azure using OIDC
       uses: azure/login@v1
       with:
@@ -120,9 +143,19 @@ jobs:
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         allow-no-subscriptions: true
 
+    # ✅ Step 2: Set up Terraform
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v1
+      
+    # ✅ Step 3: Configure Terraform for OIDC
+    - name: Set Terraform Environment Variables
+      run: |
+        echo "ARM_USE_OIDC=true" >> $GITHUB_ENV
+        echo "ARM_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}" >> $GITHUB_ENV
+        echo "ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}" >> $GITHUB_ENV
+        echo "ARM_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
 
+    # ✅ Step 4: Terraform Init (Again)
     - name: Initialize Terraform
       run: |
         terraform init \
@@ -130,7 +163,14 @@ jobs:
           -backend-config="storage_account_name=terraformconfigsa" \
           -backend-config="container_name=tfstate" \
           -backend-config="key=terraform.tfstate"
+          
+    # ✅ Step 5: Download Terraform Plan Artifact
+    - name: Download Terraform Plan Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: terraform-plan
 
+    # ✅ Step 6: Terraform Destroy
     - name: Destroy Terraform Resources
       run: |
-        terraform destroy -auto-approve -var-file="terraform.tfvars"
+        terraform destroy -var-file="variables.tfvars"

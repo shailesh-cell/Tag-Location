@@ -5,26 +5,26 @@ resource "azurerm_policy_definition" "location_policy" {
   display_name = "Enforce Allowed Locations"
 
   metadata = jsonencode({
-    "category": "General"
-  })
-
-  policy_rule = jsonencode({
-    "if" = {
-      "field" = "location",
-      "notIn" = var.allowed_locations  # Correct way to reference a list in Terraform
-    },
-    "then" = {
-      "effect" = "deny"
-    }
+    "category" = "General"
   })
 
   parameters = jsonencode({
     "allowedLocations" = {
       "type" = "Array",
       "metadata" = {
-        "description" = "List of allowed locations for resource deployment.",
+        "description" = "List of allowed locations for resource deployment."
         "displayName" = "Allowed Locations"
       }
+    }
+  })
+
+  policy_rule = jsonencode({
+    "if" = {
+      "field" = "location",
+      "notIn" = "[parameters('allowedLocations')]"  # Correct way to reference the parameter
+    },
+    "then" = {
+      "effect" = "deny"
     }
   })
 }
