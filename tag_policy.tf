@@ -27,7 +27,7 @@ resource "azurerm_policy_definition" "tagging_policy" {
     "if": {
       "allOf": [
         {
-          "field": "[format('tags[{0}]', parameters('required_tag'))]",
+          "field": "[format('tags[{0}]', parameters('required_tags'))]",
           "exists": "false"
         }
       ]
