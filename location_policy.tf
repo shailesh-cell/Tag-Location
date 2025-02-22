@@ -1,6 +1,6 @@
 #location_Policy.tf
 
-data "azurerm_subscription" "current" {}
+data "azurerm_subscription" "current_location_policy" {}
 
 resource "azurerm_policy_definition" "location_policy" {
   name         = "location-policy"

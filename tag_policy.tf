@@ -1,6 +1,6 @@
 #tag_Policy.tf
 
-data "azurerm_subscription" "current" {}
+data "azurerm_subscription" "current_tagging_policy" {}
 
 resource "azurerm_policy_definition" "tagging_policy" {
   name         = "tagging-policy"

@@ -2,7 +2,7 @@
 
 resource "azurerm_policy_assignment" "tagging_policy_assignment" {
   name                 = "tagging-policy-assignment"
-  scope                = data.azurerm_subscription.current.id
+  scope                = data.azurerm_subscription.current_tagging_policy.id
   policy_definition_id = azurerm_policy_definition.tagging_policy.id
 
   parameters = <<PARAMETERS
@@ -20,7 +20,7 @@ PARAMETERS
 
 resource "azurerm_policy_assignment" "location_policy_assignment" {
   name                 = "location-policy-assignment"
-  scope                = data.azurerm_subscription.current.id
+  scope                = data.azurerm_subscription.current_location_policy.id
   policy_definition_id = azurerm_policy_definition.location_policy.id
 
   parameters = <<PARAMETERS
