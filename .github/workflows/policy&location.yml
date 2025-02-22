@@ -51,7 +51,7 @@ jobs:
     # ✅ Step 5: Terraform Plan
     - name: Terraform Plan
       run: |
-        terraform plan -out=plan.tfplan -var-file="variables.tfvars"
+        terraform plan -out=plan.tfplan -var-file="terraform.tfvars"
 
         
     # Step 6: Upload Terraform Plan Artifact
