@@ -20,19 +20,19 @@ resource "azurerm_policy_definition" "tagging_and_location" {
         "anyOf": [
           {
             "not": {
-              "field": "[concat('tags[', parameters('requiredTags').tag1, ']')]",
+              "field": "[concat('tags[', 'CostCenter', ']')]",
               "exists": "true"
             }
           },
           {
             "not": {
-              "field": "[concat('tags[', parameters('requiredTags').tag2, ']')]",
+              "field": "[concat('tags[', 'Environment', ']')]",
               "exists": "true"
             }
           },
           {
             "not": {
-              "field": "[concat('tags[', parameters('requiredTags').tag3, ']')]",
+              "field": "[concat('tags[', 'Owner', ']')]",
               "exists": "true"
             }
           }
@@ -62,22 +62,22 @@ POLICY_RULE
       "description": "Tags that must be applied to resources."
     },
     "properties": {
-      "tag1": {
+      "CostCenter": {
         "type": "String",
         "metadata": {
-          "description": "First required tag"
+          "description": "Cost Center tag"
         }
       },
-      "tag2": {
+      "Environment": {
         "type": "String",
         "metadata": {
-          "description": "Second required tag"
+          "description": "Environment tag"
         }
       },
-      "tag3": {
+      "Owner": {
         "type": "String",
         "metadata": {
-          "description": "Third required tag"
+          "description": "Owner tag"
         }
       }
     }
