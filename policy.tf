@@ -8,52 +8,50 @@ resource "azurerm_policy_definition" "tagging_and_location" {
   mode         = "All"
   display_name = "Enforce Tags and Allowed Locations"
 
-policy_rule = <<POLICY_RULE
+  policy_rule = <<POLICY_RULE
 {
-  "properties": {
-    ...
-    "policyRule": {
-      ...
-      "if": {
+  "if": {
+    "allOf": [
+      {
+        "field": "location",
+        "notIn": "[parameters('allowedLocations')]"
+      },
+      {
         "not": {
-          "field": "location",
-          "in": "[parameters('allowedLocations')]"
+          "field": "[concat('tags[', keys(parameters('requiredTags'))[0], ']')]",
+          "exists": "true"
         }
       },
-      "then": {
-        "effect": "Deny"
-      }
-    },
-    "if": {
-      "allOf": [
-        {
-          "not": {
-            "field": "[concat('tags[', keys(parameters('requiredTags'))[0], ']')]",
-            "exists": "true"
-          }
-        },
-        {
-          "not": {
-            "field": "[concat('tags[', keys(parameters('requiredTags'))[1], ']')]",
-            "exists": "true"
-          }
+      {
+        "not": {
+          "field": "[concat('tags[', keys(parameters('requiredTags'))[1], ']')]",
+          "exists": "true"
         }
-      ]
-    },
-    "then": {
-      "effect": "Deny"
-    }
+      }
+    ]
+  },
+  "then": {
+    "effect": "Deny"
   }
 }
 POLICY_RULE
 
-parameters = <<PARAMETERS
+  parameters = <<PARAMETERS
 {
   "allowedLocations": {
-    "value": ${jsonencode(var.allowed_locations)}
+    "type": "Array",
+    "metadata": {
+      "displayName": "Allowed Locations",
+      "description": "The list of locations where resources can be created."
+    }
   },
   "requiredTags": {
-    "value": ${jsonencode(var.required_tags)}
+    "type": "Object",
+    "metadata": {
+      "displayName": "Required Tags",
+      "description": "Tags that must be applied to resources."
+    }
   }
 }
 PARAMETERS
+}
