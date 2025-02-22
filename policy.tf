@@ -8,33 +8,12 @@ resource "azurerm_policy_definition" "tagging_and_location" {
   mode         = "All"
   display_name = "Enforce Tags and Allowed Locations"
 
-  policy_rule = <<POLICY_RULE
+policy_rule = <<POLICY_RULE
 {
   "properties": {
-    "displayName": "Enforce Tags and Allowed Locations",
-    "policyType": "Custom",
-    "mode": "All",
-    "metadata": {
-      "category": "Tags"
-    },
-    "parameters": {
-      "allowedLocations": {
-        "type": "Array",
-        "metadata": {
-          "displayName": "Allowed Locations",
-          "description": "The list of locations where resources can be created."
-        },
-        "allowedValues": ${jsonencode(var.allowed_locations)}
-      },
-      "requiredTags": {
-        "type": "Object",
-        "metadata": {
-          "displayName": "Required Tags",
-          "description": "Tags that must be applied to resources."
-        }
-      }
-    },
+    ...
     "policyRule": {
+      ...
       "if": {
         "not": {
           "field": "location",
@@ -68,7 +47,8 @@ resource "azurerm_policy_definition" "tagging_and_location" {
 }
 POLICY_RULE
 
-  parameters = <<PARAMETERS
+
+parameters = <<PARAMETERS
 {
   "allowedLocations": {
     "value": ${jsonencode(var.allowed_locations)}
@@ -78,4 +58,3 @@ POLICY_RULE
   }
 }
 PARAMETERS
-}
