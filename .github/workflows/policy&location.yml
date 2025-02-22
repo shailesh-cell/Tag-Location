@@ -51,7 +51,8 @@ jobs:
     # ✅ Step 5: Terraform Plan
     - name: Terraform Plan
       run: |
-        terraform plan -out=plan.tfplan
+        terraform plan -out=plan.tfplan -var-file="variables.tfvars"
+
         
     # Step 6: Upload Terraform Plan Artifact
     - name: Upload Terraform Plan Artifact
@@ -120,7 +121,7 @@ jobs:
     # ✅ Step 6: Apply Terraform Plan
     - name: Apply Terraform
       run: |
-        terraform apply -auto-approve plan.tfplan -var-file="variables.tfvars"
+        terraform apply -auto-approve plan.tfplan
 
 
   destroy:
@@ -172,4 +173,4 @@ jobs:
     # ✅ Step 6: Terraform Destroy
     - name: Destroy Terraform Resources
       run: |
-        terraform destroy -auto-approve -var-file="variables.tfvars"
+        terraform destroy -var-file="variables.tfvars"
