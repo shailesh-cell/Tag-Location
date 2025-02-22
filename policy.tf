@@ -20,19 +20,19 @@ resource "azurerm_policy_definition" "tagging_and_location" {
         "anyOf": [
           {
             "not": {
-              "field": "[concat('tags[', 'CostCenter', ']')]",
+              "field": "[concat('tags[', parameters('requiredTags').tag1, ']')]",
               "exists": "true"
             }
           },
           {
             "not": {
-              "field": "[concat('tags[', 'Environment', ']')]",
+              "field": "[concat('tags[', parameters('requiredTags').tag2, ']')]",
               "exists": "true"
             }
           },
           {
             "not": {
-              "field": "[concat('tags[', 'Owner', ']')]",
+              "field": "[concat('tags[', parameters('requiredTags').tag3, ']')]",
               "exists": "true"
             }
           }
@@ -61,27 +61,22 @@ POLICY_RULE
       "displayName": "Required Tags",
       "description": "Tags that must be applied to resources."
     },
-    "properties": {
-      "CostCenter": {
-        "type": "String",
-        "metadata": {
-          "description": "Cost Center tag"
-        }
-      },
-      "Environment": {
-        "type": "String",
-        "metadata": {
-          "description": "Environment tag"
-        }
-      },
-      "Owner": {
-        "type": "String",
-        "metadata": {
-          "description": "Owner tag"
-        }
-      }
+    "defaultValue": {
+      "tag1": "CostCenter",
+      "tag2": "Environment",
+      "tag3": "Owner"
     }
   }
 }
 PARAMETERS
+}
+
+variable "allowed_locations" {
+  description = "List of allowed locations for resource creation"
+  type        = list(string)
+}
+
+variable "required_tags" {
+  description = "Required tags for resources"
+  type        = map(string)
 }
