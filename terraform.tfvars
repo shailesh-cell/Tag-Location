@@ -2,8 +2,4 @@
 
 allowed_locations = ["centralindia", "southindia", "westindia"]
 
-required_tags = {
-    CostCenter  = "FreeTier"
-    Environment = "Production"
-    Owner       = "DevOps Team"
-}
+required_tag = "CostCenter"
