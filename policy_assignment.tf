@@ -1,12 +1,33 @@
 # policy assignment.tf
 
-resource "azurerm_subscription_policy_assignment" "tagging_and_location" {
-  name                 = "tagging-and-location-assignment"
-  policy_definition_id = azurerm_policy_definition.tagging_and_location.id
-  subscription_id      = data.azurerm_subscription.current.id
+resource "azurerm_policy_assignment" "tagging_policy_assignment" {
+  name                 = "tagging-policy-assignment"
+  scope                = data.azurerm_subscription.current.id
+  policy_definition_id = azurerm_policy_definition.tagging_policy.id
 
-  parameters = jsonencode({
-    allowedLocations = { "value": var.allowed_locations }
-    requiredTags     = { "value": var.required_tags }
-  })
+  parameters = <<PARAMETERS
+{
+  "requiredTags": {
+    "value": {
+      "tag1": "CostCenter",
+      "tag2": "Environment",
+      "tag3": "Owner"
+    }
+  }
+}
+PARAMETERS
+}
+
+resource "azurerm_policy_assignment" "location_policy_assignment" {
+  name                 = "location-policy-assignment"
+  scope                = data.azurerm_subscription.current.id
+  policy_definition_id = azurerm_policy_definition.location_policy.id
+
+  parameters = <<PARAMETERS
+{
+  "allowedLocations": {
+    "value": ["centralindia", "southindia", "westindia"]
+  }
+}
+PARAMETERS
 }
