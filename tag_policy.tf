@@ -5,7 +5,7 @@ resource "azurerm_policy_definition" "tagging_policy" {
   policy_type  = "Custom"
   mode         = "All"
   display_name = "Enforce Required Tags"
-  management_group_id = azurerm_management_group.Development-mg.id
+  management_group_id = data.azurerm_management_group.Development-mg.id
 
   metadata = <<METADATA
   {
