@@ -32,8 +32,8 @@ resource "azurerm_policy_definition" "tagging_policy" {
         },
 	
 	{
-	  "field": "tags['Env']",
-          "notEquals": "[parameters('required_tags')['Env']]"   
+	  "field": "tags['Environment']",
+          "notEquals": "[parameters('required_tags')['Environment']]"   
 	}
       ]
     },
