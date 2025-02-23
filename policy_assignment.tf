@@ -1,5 +1,10 @@
 # policy_assignment.tf
 
+resource "azurerm_management_group" "Development-mg" {
+  display_name = "Development Management Group"
+}
+
+
 resource "azurerm_management_group_policy_assignment" "tagging_policy_assignment" {
   name                 = "tagging-policy-assignment"
   management_group_id      = azurerm_management_group.Development-mg.id
