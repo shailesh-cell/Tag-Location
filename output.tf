@@ -6,7 +6,7 @@ output "location_policy_name" {
 }
 
 output "location_policy_assignment_id" {
-  value       = azurerm_subscription_policy_assignment.location_policy_assignment.id
+  value       = azurerm_management_group_policy_assignment.location_policy_assignment.id
   description = "The ID of the assigned Azure Policy to enforce location restrictions."
 }
 
@@ -16,6 +16,6 @@ output "tagging_policy_name" {
 }
 
 output "tagging_policy_assignment_id" {
-  value       = azurerm_subscription_policy_assignment.tagging_policy_assignment.id
+  value       = azurerm_management_group_policy_assignment.tagging_policy_assignment.id
   description = "The ID of the assigned Azure Policy to enforce required tagging."
 }
