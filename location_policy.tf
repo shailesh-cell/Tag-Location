@@ -1,8 +1,15 @@
+
+resource "azurerm_management_group" "Development-mg" { 
+  display_name = "Development Management Group"
+}
+
+
 resource "azurerm_policy_definition" "location_policy" {
   name         = "location-policy"
   policy_type  = "Custom"
   mode         = "All"
   display_name = "Enforce Allowed Locations"
+  management_group_id = azurerm_management_group.Development-mg.id
 
   metadata = jsonencode({
     "category" = "General"
