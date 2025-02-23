@@ -1,7 +1,7 @@
 # policy_assignment.tf
 
 resource "azurerm_management_group_policy_assignment" "tagging_policy_assignment" {
-  name                 = "tagging-policy-assignment"
+  name                 = "tagging-policy"
   management_group_id      = data.azurerm_management_group.Development-mg.id
   policy_definition_id = azurerm_policy_definition.tagging_policy.id
 
@@ -13,7 +13,7 @@ resource "azurerm_management_group_policy_assignment" "tagging_policy_assignment
 }
 
 resource "azurerm_management_group_policy_assignment" "location_policy_assignment" {
-  name                 = "location-policy-assignment"
+  name                 = "location-policy"
   management_group_id      = data.azurerm_management_group.Development-mg.id
   policy_definition_id = azurerm_policy_definition.location_policy.id
 
